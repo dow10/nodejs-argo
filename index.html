@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NebulaFlow | Next-Gen AI Agent Orchestration Platform</title>
+    <!-- Font Awesome & Modern Typography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #090d16;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(26, 36, 56, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(56, 189, 248, 0.35);
+            --primary: #38bdf8;
+            --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --accent-purple: #c084fc;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 65%, rgba(129, 140, 248, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Ambient Glow & Utilities */
+        .text-gradient {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(9, 13, 22, 0.75);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 76px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #090d16;
+            font-size: 18px;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-gradient);
+            color: #090d16;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 11px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .secondary-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 11px 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .secondary-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-text h1 {
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 36px;
+            max-width: 580px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* Interactive Hero Simulation Terminal */
+        .hero-preview-window {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.1);
+        }
+
+        .window-header {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #eab308; }
+        .dot-green { background: #22c55e; }
+
+        .window-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+
+        .agent-node {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .agent-node.active {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.04);
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .agent-status-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .status-running {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+
+        .status-syncing {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+        }
+
+        .status-waiting {
+            background: rgba(234, 179, 8, 0.15);
+            color: #facc15;
+        }
+
+        /* Features Section */
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-header h2 {
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 17px;
+        }
+
+        .features {
+            padding: 100px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 32px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--border-glow);
+            background: var(--bg-card-hover);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon-wrapper {
+            width: 54px;
+            height: 54px;
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Metrics / Benefits Section */
+        .benefits {
+            padding: 90px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.5) 100%);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .metric-value {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+            font-family: var(--font-mono);
+        }
+
+        .benefit-card h4 {
+            font-size: 17px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .benefit-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+        }
+
+        .testimonial-slider-container {
+            max-width: 820px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .quote-icon {
+            font-size: 32px;
+            color: var(--primary);
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1.7;
+            color: #e2e8f0;
+            margin-bottom: 32px;
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .author-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #090d16;
+            font-size: 18px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .author-details h5 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .author-details span {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            width: 28px;
+            border-radius: 999px;
+            background: var(--primary);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .billing-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 50px;
+        }
+
+        .billing-toggle span {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .billing-toggle span.active {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .toggle-switch {
+            width: 52px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            padding: 3px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .toggle-knob {
+            width: 22px;
+            height: 22px;
+            background: var(--primary);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.yearly .toggle-knob {
+            transform: translateX(24px);
+        }
+
+        .discount-pill {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.15);
+            background: linear-gradient(180deg, rgba(20, 30, 48, 0.8) 0%, rgba(13, 20, 34, 0.8) 100%);
+            transform: scale(1.03);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-gradient);
+            color: #090d16;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 4px 16px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plan-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .plan-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            min-height: 42px;
+        }
+
+        .plan-price-wrapper {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .plan-price {
+            font-size: 46px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            letter-spacing: -1px;
+            color: #fff;
+        }
+
+        .plan-period {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .plan-features-list {
+            list-style: none;
+            margin-bottom: 36px;
+            flex-grow: 1;
+        }
+
+        .plan-features-list li {
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features-list li i {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta-banner {
+            padding: 90px 0;
+            margin: 60px 0 100px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.1);
+        }
+
+        .cta-banner h2 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        .cta-banner p {
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 36px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            background: #060910;
+            padding: 80px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 16px;
+            max-width: 320px;
+        }
+
+        .footer-column h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Toast Feedback */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary);
+            color: #fff;
+            padding: 14px 22px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text p {
+                margin: 0 auto 36px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                margin: 0 auto;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions .cta-button {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 76px;
+                left: 0;
+                width: 100%;
+                background: #090d16;
+                padding: 24px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .hero-text h1 {
+                font-size: 38px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header id="navbar">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <div class="logo-icon"><i class="fas fa-brain"></i></div>
+                    <div class="logo-text">Nebula<span>Flow</span></div>
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="#features">Architecture</a></li>
+                    <li><a href="#metrics">Benchmarks</a></li>
+                    <li><a href="#testimonials">Ecosystem</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#">Docs</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="#pricing" class="secondary-button" style="padding: 9px 18px;">Sign In</a>
+                    <button class="cta-button" onclick="showToast('Initializing deployment sandbox...')">
+                        <i class="fas fa-bolt"></i> Deploy Agent
+                    </button>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="badge">
+                        <span class="badge-dot"></span> NebulaFlow 3.0 Enterprise Engine
+                    </div>
+                    <h1>Orchestrate Autonomous <span class="text-gradient">AI Swarms</span> In Real-Time</h1>
+                    <p>Build, test, and scale self-governing multi-agent pipelines with instant context synchronization, sub-millisecond RPC buses, and strict safety guardrails.</p>
+                    <div class="hero-buttons">
+                        <button class="cta-button" onclick="showToast('Redirecting to Cloud Cluster Setup...')">
+                            <i class="fas fa-terminal"></i> Start Free Cluster
+                        </button>
+                        <a href="#features" class="secondary-button">
+                            <i class="fas fa-play-circle"></i> Live Architecture
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Simulation Live Terminal -->
+                <div class="hero-preview-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <div class="window-dot dot-red"></div>
+                            <div class="window-dot dot-yellow"></div>
+                            <div class="window-dot dot-green"></div>
+                        </div>
+                        <div class="window-title">cluster-us-east-01 :: swarm-core</div>
+                        <i class="fas fa-circle-nodes" style="color: var(--primary); font-size: 13px;"></i>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="agent-node active">
+                            <div class="agent-info">
+                                <i class="fas fa-microchip" style="color: #38bdf8;"></i>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff;">Supervisor-Alpha</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Context Vector Sync (4096d)</div>
+                                </div>
+                            </div>
+                            <span class="agent-status-badge status-running">Running</span>
+                        </div>
+
+                        <div class="agent-node">
+                            <div class="agent-info">
+                                <i class="fas fa-database" style="color: #c084fc;"></i>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff;">MemoryEngine-RAG</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Indexed 1.4M chunks &middot; 4ms latency</div>
+                                </div>
+                            </div>
+                            <span class="agent-status-badge status-syncing">Syncing</span>
+                        </div>
+
+                        <div class="agent-node">
+                            <div class="agent-info">
+                                <i class="fas fa-shield-halved" style="color: #4ade80;"></i>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff;">SafetyGuard-Sentinel</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Zero hallucination anomaly detected</div>
+                                </div>
+                            </div>
+                            <span class="agent-status-badge status-running">Verified</span>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 6px; color: #64748b; font-size: 12px; display: flex; justify-content: space-between;">
+                            <span>Consensus: <strong style="color: #38bdf8;">Byzantine Fault Tolerant</strong></span>
+                            <span>Throughput: <strong style="color: #4ade80;">18,400 tps</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Designed for Mission-Critical AI Workloads</h2>
+                <p>Equip your engineering teams with modular abstractions for state machine management, distributed memory, and self-correcting inference chains.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-diagram-project"></i>
+                    </div>
+                    <h3>Distributed Agent Bus</h3>
+                    <p>Sub-millisecond gRPC messaging fabric engineered for parallel consensus across heterogeneous LLM models.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <h3>Persistent Episodic Memory</h3>
+                    <p>Dynamic hierarchical vector storage with automated context pruning and long-term conversation recall.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Deterministic Sandboxing</h3>
+                    <p>Every tool execution and bash command executes in isolated eBPF microVMs with strict permission budgets.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Token Telemetry & Cost ROI</h3>
+                    <p>Deep observability stack tracking granular model token consumption, latency spikes, and cache hits.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-rotate"></i>
+                    </div>
+                    <h3>Autonomous Error Recovery</h3>
+                    <p>Automated reflection protocols that detect faulty function returns and prompt loops before production impact.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                    </div>
+                    <h3>Zero-Downtime Hot Swaps</h3>
+                    <p>Switch underlying model weights (Claude, GPT, DeepSeek, or Llama) seamlessly mid-flight with zero state loss.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics / Benchmarks Section -->
+    <section class="benefits" id="metrics">
+        <div class="container">
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="metric-value text-gradient">99.98%</div>
+                    <h4>Tool Reliability</h4>
+                    <p>Zero unhandled loop terminations</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="metric-value text-gradient">18ms</div>
+                    <h4>Median Agent Hop</h4>
+                    <p>Ultra-low cluster bus dispatch</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="metric-value text-gradient">65%</div>
+                    <h4>Token Spend Saved</h4>
+                    <p>Via smart prompt compression</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="metric-value text-gradient">100M+</div>
+                    <h4>Daily Swarm Calls</h4>
+                    <p>Trusted across Global Fortune 500</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted by Pioneering AI Teams</h2>
+                <p>Discover how forward-thinking engineering leaders rely on NebulaFlow for agentic production pipelines.</p>
+            </div>
+
+            <div class="testimonial-slider-container">
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="testimonial-text" id="testimonialText">
+                        "NebulaFlow unified our disparate LLM experiments into a resilient, production-ready distributed network. We launched our autonomous support swarms 4x faster with unprecedented reliability."
+                    </p>
+                    <div class="author-box">
+                        <div class="author-avatar" id="testimonialAvatar">ER</div>
+                        <div class="author-details">
+                            <h5 id="testimonialAuthor">Elena Rostova</h5>
+                            <span id="testimonialRole">VP of AI Engineering, HyperScale Logic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-dots">
+                    <div class="dot active" onclick="switchTestimonial(0)"></div>
+                    <div class="dot" onclick="switchTestimonial(1)"></div>
+                    <div class="dot" onclick="switchTestimonial(2)"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Predictable, Transparent Pricing</h2>
+                <p>Scale effortlessly from solo researcher experiments to high-throughput enterprise swarm deployments.</p>
+            </div>
+
+            <div class="billing-toggle">
+                <span id="labelMonthly" class="active">Monthly</span>
+                <div class="toggle-switch" id="billingToggle" onclick="toggleBilling()">
+                    <div class="toggle-knob"></div>
+                </div>
+                <span id="labelYearly">Annual Billing <span class="discount-pill">Save 20%</span></span>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Developer Tier -->
+                <div class="pricing-card">
+                    <h3 class="plan-title">Developer</h3>
+                    <p class="plan-desc">Essential toolset for engineers prototyping autonomous loops and agents.</p>
+                    <div class="plan-price-wrapper">
+                        <span class="plan-price" id="priceDev">$49</span>
+                        <span class="plan-period">/month</span>
+                    </div>
+                    <ul class="plan-features-list">
+                        <li><i class="fas fa-check"></i> Up to 5 Active Swarms</li>
+                        <li><i class="fas fa-check"></i> 10GB Episodic Vector Storage</li>
+                        <li><i class="fas fa-check"></i> Community & Discord Support</li>
+                        <li><i class="fas fa-check"></i> Standard MicroVM Sandboxing</li>
+                    </ul>
+                    <button class="secondary-button" style="width: 100%; justify-content: center;" onclick="showToast('Selected Developer Tier')">Deploy Cluster</button>
+                </div>
+
+                <!-- Pro Tier (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3 class="plan-title">Production Swarm</h3>
+                    <p class="plan-desc">For fast-growing products executing thousands of autonomous agent tasks daily.</p>
+                    <div class="plan-price-wrapper">
+                        <span class="plan-price text-gradient" id="pricePro">$189</span>
+                        <span class="plan-period">/month</span>
+                    </div>
+                    <ul class="plan-features-list">
+                        <li><i class="fas fa-check"></i> 50 Concurrent Agent Swarms</li>
+                        <li><i class="fas fa-check"></i> Sub-millisecond gRPC Mesh Bus</li>
+                        <li><i class="fas fa-check"></i> Full Multi-Model Hot Swapping</li>
+                        <li><i class="fas fa-check"></i> Priority SLA & 24/7 Dedicated Route</li>
+                        <li><i class="fas fa-check"></i> Real-time Context Compression</li>
+                    </ul>
+                    <button class="cta-button" style="width: 100%; justify-content: center;" onclick="showToast('Selected Production Swarm Tier')">Start 14-Day Free Trial</button>
+                </div>
+
+                <!-- Enterprise Tier -->
+                <div class="pricing-card">
+                    <h3 class="plan-title">Enterprise</h3>
+                    <p class="plan-desc">Custom on-premises or VPC isolated orchestration with custom hardware integration.</p>
+                    <div class="plan-price-wrapper">
+                        <span class="plan-price">Custom</span>
+                    </div>
+                    <ul class="plan-features-list">
+                        <li><i class="fas fa-check"></i> Unlimited Nodes & Swarms</li>
+                        <li><i class="fas fa-check"></i> Air-gapped On-Premises Option</li>
+                        <li><i class="fas fa-check"></i> Custom Fine-Tuning Adapters</li>
+                        <li><i class="fas fa-check"></i> SOC2 Type II & HIPAA Certified</li>
+                        <li><i class="fas fa-check"></i> Dedicated Solutions Architect</li>
+                    </ul>
+                    <button class="secondary-button" style="width: 100%; justify-content: center;" onclick="showToast('Sales Inquiry Sent!')">Contact Architecture Team</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <div class="container">
+        <section class="cta-banner">
+            <h2>Start Deploying Intelligent Swarms in Minutes</h2>
+            <p>Join over 35,000 developers building next-generation agent ecosystems. Zero setup fee, instant cluster deployment.</p>
+            <button class="cta-button" style="font-size: 16px; padding: 14px 36px;" onclick="showToast('Connecting to Quickstart SDK...')">
+                <i class="fas fa-rocket"></i> Get Started For Free
+            </button>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon"><i class="fas fa-brain"></i></div>
+                        <div class="logo-text">Nebula<span>Flow</span></div>
+                    </a>
+                    <p>The mission-critical infrastructure standard for multi-agent autonomous consensus and LLM orchestration.</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Swarm Router</a></li>
+                        <li><a href="#">Episodic Storage</a></li>
+                        <li><a href="#">eBPF Sandbox</a></li>
+                        <li><a href="#">Telemetry Dashboard</a></li>
+                        <li><a href="#">Changelog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">SDK Reference</a></li>
+                        <li><a href="#">Architecture Whitepaper</a></li>
+                        <li><a href="#">Discord Community</a></li>
+                        <li><a href="#">Agent Patterns Book</a></li>
+                        <li><a href="#">Status Page</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Security & Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Zero-Trust Guarantee</a></li>
+                        <li><a href="#">Privacy Framework</a></li>
+                        <li><a href="#">SOC2 Compliance</a></li>
+                        <li><a href="#">Responsible AI Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 NebulaFlow Technologies Inc. All rights reserved.</div>
+                <div>Engineered for autonomous scale.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Component -->
+    <div class="toast" id="toastBox">
+        <i class="fas fa-circle-check" style="color: #4ade80;"></i>
+        <span id="toastMsg">Action dispatched successfully</span>
+    </div>
+
+    <script>
+        // Mobile Navigation Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-open');
+        });
+
+        // Close mobile menu on anchor click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('mobile-open');
+            });
+        });
+
+        // Dynamic Billing Period Toggle (Monthly vs Annual with 20% discount)
+        let isYearly = false;
+        const billingToggle = document.getElementById('billingToggle');
+        const labelMonthly = document.getElementById('labelMonthly');
+        const labelYearly = document.getElementById('labelYearly');
+        const priceDev = document.getElementById('priceDev');
+        const pricePro = document.getElementById('pricePro');
+
+        function toggleBilling() {
+            isYearly = !isYearly;
+            billingToggle.classList.toggle('yearly', isYearly);
+            labelMonthly.classList.toggle('active', !isYearly);
+            labelYearly.classList.toggle('active', isYearly);
+
+            if (isYearly) {
+                priceDev.textContent = '$39';
+                pricePro.textContent = '$149';
+            } else {
+                priceDev.textContent = '$49';
+                pricePro.textContent = '$189';
+            }
+        }
+
+        // Testimonial Carousel Data & Logic
+        const testimonialsData = [
+            {
+                text: "NebulaFlow unified our disparate LLM experiments into a resilient, production-ready distributed network. We launched our autonomous support swarms 4x faster with unprecedented reliability.",
+                author: "Elena Rostova",
+                role: "VP of AI Engineering, HyperScale Logic",
+                avatar: "ER"
+            },
+            {
+                text: "The sub-millisecond gRPC routing and sandboxed microVMs eliminated all our security concerns with external tool calling. It is the gold standard for agentic systems.",
+                author: "Marcus Chen",
+                role: "Head of Infrastructure, QuantMind AI",
+                avatar: "MC"
+            },
+            {
+                text: "We slashed token costs by 65% in the first quarter thanks to the automated context pruning and episodic cache. It has transformed our operational margins.",
+                author: "Sarah Lindqvist",
+                role: "Chief Architect, FinTech Robotics",
+                avatar: "SL"
+            }
+        ];
+
+        let currentTestimonialIdx = 0;
+        const testimonialText = document.getElementById('testimonialText');
+        const testimonialAuthor = document.getElementById('testimonialAuthor');
+        const testimonialRole = document.getElementById('testimonialRole');
+        const testimonialAvatar = document.getElementById('testimonialAvatar');
+        const dots = document.querySelectorAll('.slider-dots .dot');
+
+        function switchTestimonial(idx) {
+            currentTestimonialIdx = idx;
+            const data = testimonialsData[idx];
+            
+            // Fade effect
+            testimonialText.style.opacity = '0';
+            setTimeout(() => {
+                testimonialText.textContent = `"${data.text}"`;
+                testimonialAuthor.textContent = data.author;
+                testimonialRole.textContent = data.role;
+                testimonialAvatar.textContent = data.avatar;
+                testimonialText.style.opacity = '1';
+            }, 180);
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === idx);
+            });
+        }
+
+        // Auto rotate testimonials every 6 seconds
+        setInterval(() => {
+            let nextIdx = (currentTestimonialIdx + 1) % testimonialsData.length;
+            switchTestimonial(nextIdx);
+        }, 6000);
+
+        // Toast Feedback System
+        const toastBox = document.getElementById('toastBox');
+        const toastMsg = document.getElementById('toastMsg');
+        let toastTimeout;
+
+        function showToast(message) {
+            clearTimeout(toastTimeout);
+            toastMsg.textContent = message;
+            toastBox.classList.add('show');
+            toastTimeout = setTimeout(() => {
+                toastBox.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
